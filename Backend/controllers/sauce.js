@@ -59,3 +59,19 @@ exports.deleteSauce = (req, res, next) => {
     })
     .catch((error) => res.status(500).json({ error }));
 };
+
+exports.likeSauces = (req, res, next) => {
+  const sauceId = req.params.id;
+  const userId = req.body.userId;
+  const like = req.body.like;
+  //find one et delete vote  $inc-1 $pull: user
+
+  if (like === 1) {
+    Sauce.updateOne(
+      { _id: sauceId },
+      { $inc: { likes: 1 }, $push: { usersLiked: userId } }
+    )
+      .then(() => res.status(200).json({ message: "like!" }))
+      .catch((error) => res.status(400).json({ error }));
+  }
+};
