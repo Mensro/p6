@@ -66,9 +66,6 @@ exports.likeSauces = (req, res, next) => {
   const like = req.body.like;
 
   Sauce.findOne({ _id: sauceId }).then((sauce) => {
-    const previouslyLiked = sauce.usersLiked.indexOf(userId) !== -1;
-    const previouslyDisliked = sauce.usersDisliked.indexOf(userId) !== -1;
-
     if (like === 1) {
       Sauce.updateOne(
         { _id: sauceId },
@@ -87,6 +84,9 @@ exports.likeSauces = (req, res, next) => {
         .catch((error) => res.status(400).json({ error }));
     }
     if (like === 0) {
+      const previouslyLiked = sauce.usersLiked.indexOf(userId) !== -1;
+      const previouslyDisliked = sauce.usersDisliked.indexOf(userId) !== -1;
+
       if (previouslyLiked) {
         Sauce.updateOne(
           { _id: sauceId },
